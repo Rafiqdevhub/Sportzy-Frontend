@@ -8,14 +8,20 @@ import {
   useSubscribeToMatch,
   useUpdateScore,
 } from "~/hooks";
-import {
-  ScoreBoard,
-  CommentaryList,
-  Alert,
-  LoadingSpinner,
-  ErrorBoundary,
-} from "~/components";
+import { ScoreBoard, CommentaryList, ErrorBoundary } from "~/components";
 import type { UpdateScoreRequest } from "~/types";
+import type { Route } from "./+types/matches.$id";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Sportzy- Live Match Details & Commentary" },
+    {
+      name: "description",
+      content:
+        "Watch live matches and follow expert commentary in real-time. Join Sportzy for the ultimate sports experience!",
+    },
+  ];
+}
 
 function MatchDetailContent() {
   const params = useParams();

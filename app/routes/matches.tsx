@@ -2,7 +2,18 @@ import type React from "react";
 import { useSearchParams } from "react-router";
 import { useMatches } from "~/hooks";
 import { MatchCard, ErrorBoundary } from "~/components";
+import type { Route } from "../+types/root";
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Sportzy - Live Match Updates & Commentary" },
+    {
+      name: "description",
+      content:
+        "Watch live matches and follow expert commentary in real-time. Join Sportzy for the ultimate sports experience!",
+    },
+  ];
+}
 function MatchesContent() {
   const [searchParams, setSearchParams] = useSearchParams();
   const limit = searchParams.get("limit")

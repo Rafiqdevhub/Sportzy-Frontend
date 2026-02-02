@@ -11,8 +11,19 @@ import {
   LoadingSpinner,
 } from "~/components";
 import type { CreateMatchRequest, UpdateScoreRequest, ApiError } from "~/types";
+import type { Route } from "./+types/matches";
 
 type TabType = "create" | "update";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Sportzy-Admin" },
+    {
+      name: "description",
+      content: "Admin panel for managing matches on Sportzy.",
+    },
+  ];
+}
 
 function AdminContent() {
   const navigate = useNavigate();
