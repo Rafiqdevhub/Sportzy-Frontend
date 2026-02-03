@@ -1,8 +1,3 @@
-/**
- * ScoreBoard Component
- * Displays match score information
- */
-
 import type React from "react";
 import type { Match } from "~/types";
 

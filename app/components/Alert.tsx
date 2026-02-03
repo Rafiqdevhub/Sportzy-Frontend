@@ -1,8 +1,3 @@
-/**
- * Alert Component
- * Reusable alert/notification component
- */
-
 import type React from "react";
 
 type AlertType = "success" | "error" | "warning" | "info";

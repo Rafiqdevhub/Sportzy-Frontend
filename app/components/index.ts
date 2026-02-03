@@ -1,7 +1,3 @@
-/**
- * Component exports
- */
-
 export { Alert } from "./Alert";
 export { CommentaryList } from "./CommentaryList";
 export { CreateMatchForm } from "./CreateMatchForm";

@@ -1,8 +1,3 @@
-/**
- * Loading Spinner Component
- * Reusable loading state component
- */
-
 import type React from "react";
 
 interface LoadingSpinnerProps {

@@ -1,8 +1,3 @@
-/**
- * Error Boundary Component
- * Functional component using react-error-boundary for error handling
- */
-
 import type { ReactNode } from "react";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 import type { FallbackProps } from "react-error-boundary";
@@ -13,9 +8,6 @@ interface ErrorBoundaryProps {
   onError?: (error: unknown, info: { componentStack: string }) => void;
 }
 
-/**
- * Default error fallback component
- */
 function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <div className="bg-red-50 border border-red-200 rounded-lg p-6">
@@ -33,9 +25,6 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   );
 }
 
-/**
- * ErrorBoundary functional component wrapper
- */
 export function ErrorBoundary({
   children,
   fallback,

@@ -1,8 +1,3 @@
-/**
- * CommentaryList Component
- * Displays match commentary entries
- */
-
 import type React from "react";
 import type { Commentary } from "~/types";
 
