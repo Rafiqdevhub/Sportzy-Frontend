@@ -80,6 +80,7 @@ export type WebSocketMessageType =
   | "unsubscribed"
   | "match_created"
   | "commentary"
+  | "score_update"
   | "error";
 
 export interface WebSocketMessage<T = unknown> {

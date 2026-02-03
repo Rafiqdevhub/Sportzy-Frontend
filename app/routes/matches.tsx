@@ -1,6 +1,6 @@
 import type React from "react";
 import { useSearchParams } from "react-router";
-import { useMatches } from "~/hooks";
+import { useMatches, useWebSocket, useOnNewMatch } from "~/hooks";
 import { MatchCard, ErrorBoundary } from "~/components";
 import type { Route } from "../+types/root";
 
@@ -21,6 +21,10 @@ function MatchesContent() {
     : 20;
 
   const { matches, isLoading, error } = useMatches(limit);
+  const { isConnected } = useWebSocket();
+
+  // Listen for new matches created via WebSocket
+  useOnNewMatch();
 
   const liveMatches = matches.filter((m) => m.status === "live");
   const scheduledMatches = matches.filter((m) => m.status === "scheduled");
@@ -36,23 +40,37 @@ function MatchesContent() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-12">
         <div className="mb-12 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-xl rounded-full border border-white/10 shadow-xl mb-6">
-            <svg
-              className="w-5 h-5 text-blue-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div className="flex justify-center gap-4 mb-6">
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-xl rounded-full border border-white/10 shadow-xl">
+              <svg
+                className="w-5 h-5 text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              <span className="text-white font-semibold text-sm uppercase tracking-wider">
+                All Matches
+              </span>
+            </div>
+            <div
+              className={`inline-flex items-center gap-2 px-6 py-3 backdrop-blur-xl rounded-full border shadow-xl ${isConnected ? "bg-emerald-600/20 border-emerald-500/30" : "bg-amber-600/20 border-amber-500/30"}`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-              />
-            </svg>
-            <span className="text-white font-semibold text-sm uppercase tracking-wider">
-              All Matches
-            </span>
+              <div
+                className={`w-2 h-2 rounded-full ${isConnected ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`}
+              ></div>
+              <span
+                className={`font-semibold text-sm uppercase tracking-wider ${isConnected ? "text-emerald-400" : "text-amber-400"}`}
+              >
+                {isConnected ? "Live Updates" : "Connecting..."}
+              </span>
+            </div>
           </div>
           <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight">
             Live & Upcoming

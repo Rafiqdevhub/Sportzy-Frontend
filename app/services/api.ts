@@ -121,22 +121,27 @@ async function handleResponse(response: Response): Promise<unknown> {
   throw new ApiServiceError(response.status, errorMessage, errorDetails);
 }
 
-// ============================================================================
-// API Functions
-// ============================================================================
-
 async function makeRequest<T>(
   endpoint: string,
   options: FetchOptions = {},
 ): Promise<T> {
   const url = `${API_CONFIG.BASE_URL}${endpoint}`;
   const response = await retryFetch(url, options);
-  return (await handleResponse(response)) as T;
-}
+  const data = await handleResponse(response);
 
-// ========================================================================
-// Match Endpoints
-// ========================================================================
+  // Handle the API response structure: { data: T }
+  // Extract T from the response
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    "data" in data &&
+    !("error" in data)
+  ) {
+    return (data as { data: T }).data;
+  }
+
+  return data as T;
+}
 
 export async function getMatches(limit?: number): Promise<Match[]> {
   const searchParams = new URLSearchParams();
@@ -145,26 +150,23 @@ export async function getMatches(limit?: number): Promise<Match[]> {
   const query = searchParams.toString();
   const endpoint = `${API_ENDPOINTS.MATCHES.BASE}${query ? `?${query}` : ""}`;
 
-  const response = await makeRequest<{ data: Match[] }>(endpoint);
-  return response.data;
+  return makeRequest<Match[]>(endpoint);
 }
 
 export async function getMatch(id: number): Promise<Match> {
   const endpoint = API_ENDPOINTS.MATCHES.DETAIL(id);
-  const response = await makeRequest<{ data: Match }>(endpoint);
-  return response.data;
+  return makeRequest<Match>(endpoint);
 }
 
 export async function createMatch(data: CreateMatchRequest): Promise<Match> {
   const endpoint = API_ENDPOINTS.MATCHES.BASE;
-  const response = await makeRequest<{ data: Match }>(endpoint, {
+  return makeRequest<Match>(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   });
-  return response.data;
 }
 
 export async function updateScore(
@@ -172,19 +174,14 @@ export async function updateScore(
   data: UpdateScoreRequest,
 ): Promise<Match> {
   const endpoint = API_ENDPOINTS.MATCHES.SCORE(matchId);
-  const response = await makeRequest<{ data: Match }>(endpoint, {
+  return makeRequest<Match>(endpoint, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   });
-  return response.data;
 }
-
-// ========================================================================
-// Commentary Endpoints
-// ========================================================================
 
 export async function getCommentary(
   matchId: number,
@@ -196,8 +193,7 @@ export async function getCommentary(
   const query = searchParams.toString();
   const endpoint = `${API_ENDPOINTS.MATCHES.COMMENTARY(matchId)}${query ? `?${query}` : ""}`;
 
-  const response = await makeRequest<{ data: Commentary[] }>(endpoint);
-  return response.data;
+  return makeRequest<Commentary[]>(endpoint);
 }
 
 export async function createCommentary(
@@ -205,14 +201,13 @@ export async function createCommentary(
   data: CreateCommentaryRequest,
 ): Promise<Commentary> {
   const endpoint = API_ENDPOINTS.MATCHES.COMMENTARY(matchId);
-  const response = await makeRequest<{ data: Commentary }>(endpoint, {
+  return makeRequest<Commentary>(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   });
-  return response.data;
 }
 
 // Export error class for use in error handling

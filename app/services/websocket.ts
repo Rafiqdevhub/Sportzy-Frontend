@@ -89,6 +89,7 @@ function _handleMessage(message: WebSocketMessage): void {
       break;
 
     case "match_created":
+      console.log("[WebSocket] New match created");
       _emitEvent("match_created", message.data);
       break;
 
@@ -99,6 +100,19 @@ function _handleMessage(message: WebSocketMessage): void {
         "matchId" in message.data
       ) {
         const matchId = (message.data as { matchId: number }).matchId;
+        _emitEvent(`match:${matchId}:commentary`, message.data);
+        _emitEvent(`match:${matchId}`, message.data);
+      }
+      break;
+
+    case "score_update":
+      if (
+        message.data &&
+        typeof message.data === "object" &&
+        "matchId" in message.data
+      ) {
+        const matchId = (message.data as { matchId: number }).matchId;
+        _emitEvent(`match:${matchId}:score_update`, message.data);
         _emitEvent(`match:${matchId}`, message.data);
       }
       break;

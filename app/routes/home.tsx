@@ -55,7 +55,7 @@ const Home = () => {
             <div className="flex flex-wrap justify-center items-center gap-4 pt-4">
               <button
                 onClick={() => navigate("/matches")}
-                className="group px-10 py-5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-xl transition-all shadow-2xl shadow-blue-600/50 hover:shadow-blue-700/60 hover:scale-105 flex items-center gap-3 text-lg"
+                className="group px-10 py-5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-xl transition-all shadow-2xl shadow-blue-600/50 hover:shadow-blue-700/60 hover:scale-105 flex items-center gap-3 text-lg cursor-pointer"
               >
                 <svg
                   className="w-6 h-6 group-hover:rotate-12 transition-transform"
@@ -74,7 +74,7 @@ const Home = () => {
               </button>
               <button
                 onClick={() => navigate("/admin")}
-                className="group px-10 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white font-bold rounded-xl transition-all border border-white/20 hover:border-white/30 hover:scale-105 flex items-center gap-3 text-lg"
+                className="group px-10 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-xl text-white font-bold rounded-xl transition-all border border-white/20 hover:border-white/30 hover:scale-105 flex items-center gap-3 text-lg cursor-pointer"
               >
                 <svg
                   className="w-6 h-6 group-hover:rotate-90 transition-transform"

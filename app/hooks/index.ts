@@ -10,14 +10,7 @@ import type {
   UpdateScoreRequest,
 } from "~/types";
 import { useAppStore } from "~/store";
-import {
-  connect,
-  subscribe,
-  unsubscribe,
-  on,
-  off,
-  isConnected,
-} from "~/services/websocket";
+import { connect, subscribe, unsubscribe, on, off } from "~/services/websocket";
 
 export const useMatches = (limit?: number) => {
   const {
@@ -320,8 +313,12 @@ export const useWebSocket = () => {
 };
 
 export const useSubscribeToMatch = (matchId: number) => {
-  const { addSubscription, removeSubscription, addCommentaryToMatch } =
-    useAppStore();
+  const {
+    addSubscription,
+    removeSubscription,
+    addCommentaryToMatch,
+    updateMatch,
+  } = useAppStore();
 
   useEffect(() => {
     // Subscribe to match
@@ -335,13 +332,57 @@ export const useSubscribeToMatch = (matchId: number) => {
       }
     };
 
-    on(`match:${matchId}`, handleCommentary);
+    // Setup listener for score updates
+    const handleScoreUpdate = (data: unknown) => {
+      if (
+        data &&
+        typeof data === "object" &&
+        "homeScore" in data &&
+        "awayScore" in data
+      ) {
+        const scoreData = data as { homeScore: number; awayScore: number };
+        updateMatch(matchId, {
+          homeScore: scoreData.homeScore,
+          awayScore: scoreData.awayScore,
+        });
+      }
+    };
+
+    on(`match:${matchId}:commentary`, handleCommentary);
+    on(`match:${matchId}:score_update`, handleScoreUpdate);
 
     // Cleanup
     return () => {
       unsubscribe(matchId);
       removeSubscription(matchId);
-      off(`match:${matchId}`, handleCommentary);
+      off(`match:${matchId}:commentary`, handleCommentary);
+      off(`match:${matchId}:score_update`, handleScoreUpdate);
     };
-  }, [matchId, addSubscription, removeSubscription, addCommentaryToMatch]);
+  }, [
+    matchId,
+    addSubscription,
+    removeSubscription,
+    addCommentaryToMatch,
+    updateMatch,
+  ]);
+};
+
+export const useOnNewMatch = (callback?: (match: Match) => void) => {
+  const { addMatch } = useAppStore();
+
+  useEffect(() => {
+    const handleNewMatch = (data: unknown) => {
+      if (data && typeof data === "object" && "id" in data) {
+        const match = data as Match;
+        addMatch(match);
+        callback?.(match);
+      }
+    };
+
+    on("match_created", handleNewMatch);
+
+    return () => {
+      off("match_created", handleNewMatch);
+    };
+  }, [addMatch, callback]);
 };
