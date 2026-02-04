@@ -13,8 +13,11 @@ RUN npm ci --omit=dev
 # Stage 3: Build application
 FROM node:20-alpine AS build-env
 WORKDIR /app
-# Copy all source files and dev dependencies
+# Copy package files
+COPY package.json package-lock.json ./
+# Copy all source files
 COPY . .
+# Copy dev dependencies from stage 1
 COPY --from=development-dependencies-env /app/node_modules ./node_modules
 # Build React Router application
 RUN npm run build
