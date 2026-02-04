@@ -1,8 +1,34 @@
 .DS_Store
 .env
+.env.local
+.env.*.local
 /node_modules/
 
 # React Router
 /.react-router/
 /build/
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.editorconfig
+
+# Docker
+*.log
+.docker/
+docker-compose.override.yml
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Build artifacts
+dist/
+coverage/
+.nyc_output/
+
+# Documentation
 copilot-instructions.md

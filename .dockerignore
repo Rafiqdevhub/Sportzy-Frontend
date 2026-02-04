@@ -1,4 +1,56 @@
+# Build artifacts
 .react-router
 build
+dist
+
+# Dependencies & package managers
 node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+package-lock.json
+
+# Version control
+.git
+.gitignore
+.github
+
+# IDE & Editor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.editorconfig
+.prettierrc
+.eslintrc*
+.DS_Store
+
+# Environment files (keep .env.example only)
+.env
+.env.local
+.env.*.local
+
+# Testing & Coverage
+coverage
+.nyc_output
+*.lcov
+.jest_cache
+__tests__
+
+# Documentation
 README.md
+CHANGELOG.md
+LICENSE
+*.md
+
+# CI/CD
+.github
+.gitlab-ci.yml
+docker-compose*.yml
+
+# Development config files
+tsconfig.json
+vite.config.ts
+react-router.config.ts

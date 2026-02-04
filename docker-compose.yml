@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sportzy-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # Development environment variables
+      - NODE_ENV=production
+      - VITE_API_URL=http://localhost:8000
+      - VITE_WS_URL=ws://localhost:8000
+    # Uncomment for production with custom API URL
+    # environment:
+    #   - NODE_ENV=production
+    #   - VITE_API_URL=https://api.sportzy.com
+    #   - VITE_WS_URL=wss://api.sportzy.com
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    restart: unless-stopped
+    networks:
+      - sportzy-network
+
+networks:
+  sportzy-network:
+    driver: bridge
