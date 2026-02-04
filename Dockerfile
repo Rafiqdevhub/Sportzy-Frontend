@@ -1,10 +1,3 @@
-# ============================================================================
-# Sportzy Frontend Dockerfile
-# Multi-stage build for optimized production Docker image
-# Application: React Router v7 with Vite, Tailwind CSS
-# Port: 3000
-# ============================================================================
-
 # Stage 1: Install development dependencies
 FROM node:20-alpine AS development-dependencies-env
 WORKDIR /app
