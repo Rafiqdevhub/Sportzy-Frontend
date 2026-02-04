@@ -23,7 +23,6 @@ jobs:
       packages: write
 
     steps:
-      # Check out the repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
