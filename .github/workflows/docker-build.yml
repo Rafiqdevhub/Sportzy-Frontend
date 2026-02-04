@@ -5,13 +5,13 @@ on:
     branches:
       - master
       - main
-      - feat/dockerize
+      - feat/docker-build
 
   pull_request:
     branches:
       - master
-      - main\
-      - feat/dockerize
+      - main
+      - feat/docker-build
 
 env:
   REGISTRY: docker.io
