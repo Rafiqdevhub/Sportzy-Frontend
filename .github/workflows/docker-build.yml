@@ -4,13 +4,24 @@ on:
   push:
     branches:
       - main
+      - master
       - develop
     tags:
       - "v*"
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - ".github/workflows/docker-build.yml"
+
   pull_request:
     branches:
       - main
+      - master
       - develop
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - ".github/workflows/docker-build.yml"
 
 jobs:
   build:
