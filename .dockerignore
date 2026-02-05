@@ -49,7 +49,3 @@ LICENSE
 .gitlab-ci.yml
 docker-compose*.yml
 
-# Development config files
-tsconfig.json
-vite.config.ts
-react-router.config.ts
